@@ -1,5 +1,5 @@
 ﻿Namespace Constants
-    Public Shared Module Settings
+    Public Module Settings
     
     Public Const SettingsPage1Id As String = "settings-page1"
     Public Const SettingsPage1Name As String = "Sample Settings"

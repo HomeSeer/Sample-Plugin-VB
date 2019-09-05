@@ -4,3 +4,4 @@
 /.idea
 /obj
 /bin
+*.user

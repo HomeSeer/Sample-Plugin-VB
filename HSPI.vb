@@ -5,10 +5,35 @@ Imports HomeSeer.PluginSdk
 Imports HomeSeer.PluginSdk.Logging
 Imports Newtonsoft.Json
 
+''' <inheritdoc cref="AbstractPlugin"/>
+''' <summary>
+''' The plugin class for HomeSeer Sample Plugin that implements the <see cref="AbstractPlugin"/> base class.
+''' </summary>
+''' <remarks>
+''' This class is accessed by HomeSeer and requires that its name be "HSPI" and be located in a namespace
+'''  that corresponds to the name of the executable. For this plugin, "HomeSeerSamplePlugin_VB" the executable
+'''  file is "HSPI_HomeSeerSamplePlugin_VB.exe" and this class is HSPI_HomeSeerSamplePlugin_VB.HSPI
+''' <para>
+''' If HomeSeer is unable to find this class, the plugin will not start.
+''' </para>
+''' </remarks>
 Public Class HSPI
     Inherits AbstractPlugin
     Implements WriteLogSampleActionType.IWriteLogActionListener
     
+   ''' <inheritdoc />
+   ''' <remarks>
+   ''' This ID is used to identify the plugin and should be unique across all plugins
+   ''' <para>
+   ''' This must match the MSBuild property $(PluginId) as this will be used to copy
+   '''  all of the HTML feature pages located in .\html\ to a relative directory
+   '''  within the HomeSeer html folder.
+   ''' </para>
+   ''' <para>
+   ''' The relative address for all of the HTML pages will end up looking like this:
+   '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin_VB\
+   ''' </para>
+   ''' </remarks>
     Public Overrides ReadOnly Property Id As String
         Get
             Return "HomeSeerSamplePlugin_VB"
@@ -21,6 +46,10 @@ Public Class HSPI
         End Get
     End Property
 
+    ''' <inheritdoc />
+    ''' <remarks>
+    ''' This is the readable name for the plugin that is displayed throughout HomeSeer
+    ''' </remarks>
     Protected Overrides ReadOnly Property SettingsFileName As String
         Get 
             Return "HomeSeerSamplePlugin-VB.ini"
@@ -28,12 +57,31 @@ Public Class HSPI
     End Property
 
     Public Sub New()
+        'Initialize the plugin 
+
+        'Enable internal debug logging to console
         LogDebug = True
+        'Setup anything that needs to be configured before a connection to HomeSeer is established
+        ' like initializing the starting state of anything needed for the operation of the plugin
+            
+        'Such as initializing the settings pages presented to the user (currently saved state is loaded later)
         InitializeSettingsPages()
+        
+        'Or adding an event action or trigger type definition to the list of types supported by your plugin
         ActionTypes.AddActionType(GetType(WriteLogSampleActionType))
         TriggerTypes.AddTriggerType(GetType(SampleTriggerType))
     End Sub
     
+    ''' <summary>
+    ''' Initialize the starting state of the settings pages for the HomeSeerSamplePlugin.
+    '''  This constructs the framework that the user configurable settings for the plugin live in.
+    '''  Any saved configuration options are loaded later in <see cref="Initialize"/> using
+    '''  <see cref="AbstractPlugin.LoadSettingsFromIni"/>
+    ''' </summary>
+    ''' <remarks>
+    ''' For ease of use throughout the plugin, all of the view IDs, names, and values (non-volatile data)
+    '''  are stored in the <see cref="HSPI_HomeSeerSamplePlugin_VB.Constants.Settings"/> static class.
+    ''' </remarks>
     Private Sub InitializeSettingsPages()
         Dim settingsPage1 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage1Id, Constants.Settings.SettingsPage1Name)
         settingsPage1.WithLabel(Constants.Settings.Sp1ColorLabelId, Nothing, Constants.Settings.Sp1ColorLabelValue)
@@ -66,8 +114,10 @@ Public Class HSPI
     End Sub
 
     Protected Overrides Sub Initialize()
+        'Load the state of Settings saved to INI if there are any.
         LoadSettingsFromIni()
         Console.WriteLine("Registering feature pages")
+        'Initialize feature pages
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process")
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page")
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-trigger-feature.html", "Trigger Feature Page")
@@ -77,6 +127,7 @@ Public Class HSPI
 
     Protected Overrides Function OnSettingChange(pageId As String, currentView As AbstractView, changedView As AbstractView) As Boolean
         
+        'React to the toggles that control the visibility of the last 2 settings pages
         If changedView.Id = Constants.Settings.Sp1PageVisToggle1Id Then
             Dim tView As ToggleView = TryCast(changedView, ToggleView)
             If tView Is Nothing Then
@@ -109,6 +160,7 @@ Public Class HSPI
     Protected Overrides Sub BeforeReturnStatus()
     End Sub
 
+   'Process any HTTP POST requests targeting pages registered to your plugin
     Public Overrides Function PostBackProc(page As String, data As String, user As String, userRights As Integer) As String
         Console.WriteLine("PostBack")
         Dim response = ""
@@ -155,6 +207,13 @@ Public Class HSPI
         Return response
     End Function
     
+    ''' <summary>
+    ''' Called by the sample guided process feature page through a liquid tag to provide the list of available colors
+    ''' <para>
+    ''' {{plugin_function 'HomeSeerSamplePlugin' 'GetSampleSelectList' []}}
+    ''' </para>
+    ''' </summary>
+    ''' <returns>The HTML for the list of select list options</returns>
     Public Function GetSampleSelectList() As String
         Console.WriteLine("Getting sample select list for sample-guided-process page")
         Dim sb = New StringBuilder("<select class=""mdb-select md-form"" id=""step3SampleSelectList"">")
@@ -207,6 +266,16 @@ Public Class HSPI
         Return sb.ToString()
     End Function
 
+    ''' <summary>
+    ''' Called by the sample trigger feature page to get the HTML for a list of checkboxes to use a trigger options
+    ''' <para>
+    ''' {{list=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptionsHtml' [2]}}
+    ''' </para>
+    ''' </summary>
+    ''' <param name="numTriggerOptions">The number of checkboxes to generate</param>
+    ''' <returns>
+    ''' A List of HTML strings representing checkbox input elements
+    ''' </returns>
     Public Function GetTriggerOptionsHtml(ByVal numTriggerOptions As Integer) As List(Of String)
         Dim triggerOptions = New List(Of String)()
 
@@ -220,6 +289,16 @@ Public Class HSPI
         Return triggerOptions
     End Function
 
+    ''' <summary>
+    ''' Called by the sample trigger feature page to get trigger option items as a list to populate HTML on the page.
+    ''' <para>
+    ''' {{list2=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptions' [2]}}
+    ''' </para>
+    ''' </summary>
+    ''' <param name="numTriggerOptions">The number of trigger options to generate.</param>
+    ''' <returns>
+    ''' A List of <see cref="TriggerOptionItem"/>s used for checkbox input HTML element IDs and Names
+    ''' </returns>
     Public Function GetTriggerOption(ByVal numTriggerOptions As Integer) As List(Of TriggerOptionItem)
         Dim triggerOptions = New List(Of TriggerOptionItem)()
 
@@ -230,6 +309,7 @@ Public Class HSPI
         Return triggerOptions
     End Function
 
+   '<inheritdoc />
     Public Sub WriteLog(ByVal logType As ELogType, ByVal message As String) Implements WriteLogSampleActionType.IWriteLogActionListener.WriteLog
         HomeSeerSystem.WriteLog(logType, message, Name)
     End Sub
