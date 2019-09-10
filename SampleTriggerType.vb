@@ -74,15 +74,15 @@ Public Class SampleTriggerType
     End Function
 
     ''' <inheritdoc />
-    Public Sub New(ByVal trigInfo As TrigActInfo)
-        MyBase.New(trigInfo)
+    Public Sub New(ByVal trigInfo As TrigActInfo, ByVal inListener As TriggerTypeCollection.ITriggerTypeListener, Optional ByVal debugLog As Boolean = False)
+        MyBase.New(trigInfo, inListener, debugLog)
     End Sub
     ''' <inheritdoc />
     ''' <remarks>
     ''' All trigger types must implement this constructor
     ''' </remarks>
-    Public Sub New(ByVal id As Integer, ByVal eventRef As Integer, ByVal selectedSubTriggerIndex As Integer, ByVal dataIn As Byte())
-        MyBase.New(id, eventRef, selectedSubTriggerIndex, dataIn)
+    Public Sub New(ByVal id As Integer, ByVal eventRef As Integer, ByVal selectedSubTriggerIndex As Integer, ByVal dataIn As Byte(), ByVal inListener As TriggerTypeCollection.ITriggerTypeListener, Optional ByVal debugLog As Boolean = False)
+        MyBase.New(id, eventRef, selectedSubTriggerIndex, dataIn, inListener, debugLog)
     End Sub
     ''' <inheritdoc />
     ''' <remarks>

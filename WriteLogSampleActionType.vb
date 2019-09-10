@@ -65,8 +65,8 @@ Public Class WriteLogSampleActionType
     ''' <remarks>
     ''' All action types must implement this constructor
     ''' </remarks>
-    Public Sub New(ByVal id As Integer, ByVal eventRef As Integer, ByVal dataIn As Byte())
-        MyBase.New(id, eventRef, dataIn)
+    Public Sub New(ByVal id As Integer, ByVal eventRef As Integer, ByVal dataIn As Byte(), ByVal inListener As ActionTypeCollection.IActionTypeListener, Optional ByVal debugLog As Boolean = False)
+        MyBase.New(id, eventRef, dataIn, inListener, debugLog)
     End Sub
     ''' <inheritdoc />
     ''' <remarks>

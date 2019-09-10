@@ -242,7 +242,7 @@ Public Class HSPI
 
                     'Handle each trigger that matches
                     For Each configuredTrigger In configuredTriggers
-                        Dim trig = New SampleTriggerType(configuredTrigger)
+                        Dim trig = New SampleTriggerType(configuredTrigger, Me, LogDebug)
 
                         If trig.ShouldTriggerFire(triggerOptions.ToArray()) Then
                             HomeSeerSystem.TriggerFire(Name, configuredTrigger)

@@ -118,7 +118,6 @@
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="PluginSdk.dll.config" />
   </ItemGroup>
   <!--
   Include the local HTML folder and all of the HTML files it contains.
