@@ -71,7 +71,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HSCF, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\HomeSeer-PluginSDK.1.0.3\lib\net462\HSCF.dll</HintPath>
+      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\HSCF.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
@@ -79,7 +79,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\HomeSeer-PluginSDK.1.0.3\lib\net462\PluginSdk.dll</HintPath>
+      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\PluginSdk.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -103,7 +103,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\Devices.vb" />
     <Compile Include="Constants\Settings.vb" />
+    <Compile Include="Features\DeviceAddPostData.vb" />
+    <Compile Include="Features\SampleGuidedProcessData.vb" />
+    <Compile Include="Features\TriggerOptionItem.vb" />
     <Compile Include="HSPI.vb" />
     <Compile Include="Program.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -111,9 +115,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="SampleGuidedProcessData.vb" />
     <Compile Include="SampleTriggerType.vb" />
-    <Compile Include="TriggerOptionItem.vb" />
     <Compile Include="WriteLogSampleActionType.vb" />
   </ItemGroup>
   <ItemGroup>

@@ -160,6 +160,7 @@ Public Class HSPI
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process")
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page")
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-trigger-feature.html", "Trigger Feature Page")
+        HomeSeerSystem.RegisterDeviceIncPage(Id, "add-sample-device.html", "Add Sample Device")
         Console.WriteLine("Initialized")
         Status = PluginStatus.Ok()
     End Sub
@@ -266,6 +267,29 @@ Public Class HSPI
                     End If
                     response = postData.GetResponse()
                 Catch exception As JsonSerializationException
+                    If LogDebug Then
+                        Console.WriteLine(exception.Message)
+                    End If
+                    response = "error"
+                End Try
+                
+            Case "add-sample-device.html"
+                Try
+                    Dim postData = JsonConvert.DeserializeObject(Of DeviceAddPostData)(data)
+                    If LogDebug Then
+                        Console.WriteLine("Post back from add-sample-device page")
+                    End If
+                    If postData.Action = "verify" Then
+                        response = JsonConvert.SerializeObject(postData.Device)
+                    Else
+                        Dim deviceData = postData.Device
+                        Dim device = deviceData.BuildDevice(Id)
+                        Dim devRef = HomeSeerSystem.CreateDevice(device)
+                        deviceData.Ref = devRef
+                        response = JsonConvert.SerializeObject(deviceData)
+                    End If
+                    
+                Catch exception As Exception
                     If LogDebug Then
                         Console.WriteLine(exception.Message)
                     End If
