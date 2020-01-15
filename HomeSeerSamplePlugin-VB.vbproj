@@ -79,7 +79,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\PluginSdk.dll</HintPath>
+      <HintPath>..\HomeSeer\HomeSeer\bin\homeseer\PluginSdk.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

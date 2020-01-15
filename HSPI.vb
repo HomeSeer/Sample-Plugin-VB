@@ -160,6 +160,7 @@ Public Class HSPI
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-guided-process.html", "Sample Guided Process")
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-blank.html", "Sample Blank Page")
         HomeSeerSystem.RegisterFeaturePage(Id, "sample-trigger-feature.html", "Trigger Feature Page")
+        HomeSeerSystem.RegisterFeaturePage(Id, "sample-functions.html", "Plugin Functions Sample")
         HomeSeerSystem.RegisterDeviceIncPage(Id, "add-sample-device.html", "Add Sample Device")
         Console.WriteLine("Initialized")
         Status = PluginStatus.Ok()
@@ -409,8 +410,44 @@ Public Class HSPI
         Return triggerOptions
     End Function
 
-   '<inheritdoc />
+    '<inheritdoc />
     Public Sub WriteLog(ByVal logType As ELogType, ByVal message As String) Implements WriteLogSampleActionType.IWriteLogActionListener.WriteLog
         HomeSeerSystem.WriteLog(logType, message, Name)
     End Sub
+
+    ' custom functions that can be accessed from a feature page
+    <Serializable>
+    Public Class CustomClass
+        Public IntItem As Integer
+        Public StringItem As String
+        Public ArrayItem As New List(Of String)
+    End Class
+
+    Public Function MyCustomFunctionArray(param As String) As List(Of CustomClass)
+        Dim list As New List(Of CustomClass)
+        Dim cc As CustomClass
+        Dim ai As List(Of String)
+
+        cc = New CustomClass
+        cc.IntItem = 1
+        cc.StringItem = "string 1"
+        ai = New List(Of String)
+        ai.Add("list item 1")
+        ai.Add("list item 2")
+        cc.ArrayItem = ai
+        list.Add(cc)
+
+        cc = New CustomClass
+        cc.IntItem = 2
+        cc.StringItem = "string 2"
+        ai = New List(Of String)
+        ai.Add("list item 3")
+        ai.Add("list item 4")
+        cc.ArrayItem = ai
+        list.Add(cc)
+        Return list
+    End Function
+
+
+
 End Class
