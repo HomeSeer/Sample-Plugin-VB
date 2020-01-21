@@ -137,6 +137,7 @@
     </HtmlFiles>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="html\add-sample-device.html" />
     <Content Include="html\sample-blank.html" />
     <Content Include="html\sample-guided-process.html" />
     <Content Include="html\sample-trigger-feature.html" />
