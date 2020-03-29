@@ -41,16 +41,26 @@ Public Class WriteLogSampleActionType
             Return $"{PageId}-messageinput"
         End Get
     End Property
+
+    Private mvarlogTypeOptions As List(Of String)
     ''' <summary>
     ''' The available log types to select from
     ''' </summary>
-    Private ReadOnly _logTypeOptions As List(Of String) = New List(Of String) From {
-        "Trace",
-        "Debug",
-        "Info",
-        "Warning",
-        "Error"
-    }
+    ''' 
+    Private ReadOnly Property _logTypeOptions As List(Of String)
+        Get
+            If mvarlogTypeOptions Is Nothing Then
+                mvarlogTypeOptions = New List(Of String) From {
+                    "Trace",
+                    "Debug",
+                    "Info",
+                    "Warning",
+                    "Error"
+                }
+            End If
+            Return mvarlogTypeOptions
+        End Get
+    End Property
 
     ''' <summary>
     ''' The interface bridge to HSPI that enables proper encapsulation of access to the HomeSeer System
@@ -74,7 +84,7 @@ Public Class WriteLogSampleActionType
     ''' </remarks>
     Public Sub New()
     End Sub
-    
+
     ''' <inheritdoc />
     ''' <remarks>
     ''' Return the name of the action type
