@@ -78,9 +78,8 @@
       <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="PluginSdk">
       <HintPath>..\HomeSeer\HomeSeer\bin\homeseer\PluginSdk.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -116,6 +115,7 @@
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
     <Compile Include="SampleTriggerType.vb" />
+    <Compile Include="SpeakerClient.vb" />
     <Compile Include="WriteLogSampleActionType.vb" />
   </ItemGroup>
   <ItemGroup>
