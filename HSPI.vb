@@ -322,11 +322,11 @@ Public Class HSPI
 
         Return response
     End Function
-    
+
     ''' <summary>
     ''' Called by the sample guided process feature page through a liquid tag to provide the list of available colors
     ''' <para>
-    ''' {{plugin_function 'HomeSeerSamplePlugin' 'GetSampleSelectList' []}}
+    ''' {{plugin_function 'HomeSeerSamplePlugin_VB' 'GetSampleSelectList' []}}
     ''' </para>
     ''' </summary>
     ''' <returns>The HTML for the list of select list options</returns>
@@ -389,7 +389,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get the HTML for a list of checkboxes to use a trigger options
     ''' <para>
-    ''' {{list=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptionsHtml' [2]}}
+    ''' {{list=plugin_function 'HomeSeerSamplePlugin_VB' 'GetTriggerOptionsHtml' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of checkboxes to generate</param>
@@ -412,7 +412,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get trigger option items as a list to populate HTML on the page.
     ''' <para>
-    ''' {{list2=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptions' [2]}}
+    ''' {{list2=plugin_function 'HomeSeerSamplePlugin_VB' 'GetTriggerOptions' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of trigger options to generate.</param>
