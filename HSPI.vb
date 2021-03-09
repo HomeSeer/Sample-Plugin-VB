@@ -253,9 +253,9 @@ Public Class HSPI
                 'Handle the Trigger Feature page
                 Try
                     Dim triggerOptions = JsonConvert.DeserializeObject(Of List(Of Boolean))(data)
-                    
+
                     'Get all triggers configured on the HomeSeer system that are of the SampleTriggerType
-                    Dim configuredTriggers = HomeSeerSystem.GetTriggersByType(Name, SampleTriggerType.TriggerNumber)
+                    Dim configuredTriggers = HomeSeerSystem.GetTriggersByType(Id, SampleTriggerType.TriggerNumber)
 
                     If configuredTriggers.Length = 0 Then
                         Return "No triggers configured to fire."
@@ -266,7 +266,7 @@ Public Class HSPI
                         Dim trig = New SampleTriggerType(configuredTrigger, Me, LogDebug)
 
                         If trig.ShouldTriggerFire(triggerOptions.ToArray()) Then
-                            HomeSeerSystem.TriggerFire(Name, configuredTrigger)
+                            HomeSeerSystem.TriggerFire(Id, configuredTrigger)
                         End If
                     Next
 
