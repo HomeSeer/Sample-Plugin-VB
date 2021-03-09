@@ -342,7 +342,7 @@ Public Class HSPI
        
 
         Try
-            Dim colorSettings = Settings("settings-page2").GetViewById("settings-page2.colorgroup")
+            Dim colorSettings = Settings(Constants.Settings.SettingsPage1Id).GetViewById(Constants.Settings.Sp1ColorGroupId)
             Dim colorViewGroup As ViewGroup = TryCast(colorSettings, ViewGroup)
             Dim colorView As ToggleView
 
