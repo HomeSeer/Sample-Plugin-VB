@@ -11,8 +11,8 @@ Imports Newtonsoft.Json
 ''' </summary>
 ''' <remarks>
 ''' This class is accessed by HomeSeer and requires that its name be "HSPI" and be located in a namespace
-'''  that corresponds to the name of the executable. For this plugin, "HomeSeerSamplePlugin_VB" the executable
-'''  file is "HSPI_HomeSeerSamplePlugin_VB.exe" and this class is HSPI_HomeSeerSamplePlugin_VB.HSPI
+'''  that corresponds to the name of the executable. For this plugin, "HomeSeerSamplePluginVB" the executable
+'''  file is "HSPI_HomeSeerSamplePluginVB.exe" and this class is HSPI_HomeSeerSamplePluginVB.HSPI
 ''' <para>
 ''' If HomeSeer is unable to find this class, the plugin will not start.
 ''' </para>
@@ -36,12 +36,12 @@ Public Class HSPI
     ''' </para>
     ''' <para>
     ''' The relative address for all of the HTML pages will end up looking like this:
-    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin_VB\
+    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin-VB\
     ''' </para>
     ''' </remarks>
     Public Overrides ReadOnly Property Id As String
         Get
-            Return "HomeSeerSamplePlugin_VB"
+            Return "HomeSeerSamplePlugin-VB"
         End Get
     End Property
    
@@ -50,8 +50,8 @@ Public Class HSPI
     ''' This is the readable name for the plugin that is displayed throughout HomeSeer
     ''' </remarks>
     Public Overrides ReadOnly Property Name As String
-        Get 
-            Return "HomeSeerSamplePlugin-VB"
+        Get
+            Return "Sample Plugin VB"
         End Get
     End Property
 
@@ -77,7 +77,7 @@ Public Class HSPI
         ActionTypes.AddActionType(GetType(WriteLogSampleActionType))
         TriggerTypes.AddTriggerType(GetType(SampleTriggerType))
     End Sub
-    
+
     ''' <summary>
     ''' Initialize the starting state of the settings pages for the HomeSeerSamplePlugin.
     '''  This constructs the framework that the user configurable settings for the plugin live in.
@@ -86,7 +86,7 @@ Public Class HSPI
     ''' </summary>
     ''' <remarks>
     ''' For ease of use throughout the plugin, all of the view IDs, names, and values (non-volatile data)
-    '''  are stored in the <see cref="HSPI_HomeSeerSamplePlugin_VB.Constants.Settings"/> static class.
+    '''  are stored in the <see cref="HSPI_HomeSeerSamplePluginVB.Constants.Settings"/> static class.
     ''' </remarks>
     Private Sub InitializeSettingsPages()
         'Initialize the first settings page
@@ -326,7 +326,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample guided process feature page through a liquid tag to provide the list of available colors
     ''' <para>
-    ''' {{plugin_function 'HomeSeerSamplePlugin_VB' 'GetSampleSelectList' []}}
+    ''' {{plugin_function 'HomeSeerSamplePlugin-VB' 'GetSampleSelectList' []}}
     ''' </para>
     ''' </summary>
     ''' <returns>The HTML for the list of select list options</returns>
@@ -389,7 +389,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get the HTML for a list of checkboxes to use a trigger options
     ''' <para>
-    ''' {{list=plugin_function 'HomeSeerSamplePlugin_VB' 'GetTriggerOptionsHtml' [2]}}
+    ''' {{list=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptionsHtml' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of checkboxes to generate</param>
@@ -412,7 +412,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get trigger option items as a list to populate HTML on the page.
     ''' <para>
-    ''' {{list2=plugin_function 'HomeSeerSamplePlugin_VB' 'GetTriggerOptions' [2]}}
+    ''' {{list2=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptions' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of trigger options to generate.</param>

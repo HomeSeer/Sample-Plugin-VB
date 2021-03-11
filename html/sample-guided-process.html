@@ -49,7 +49,7 @@
                     <div data-step-label="Select an item" class="step-title waves-effect waves-dark">Step 3</div>
                     <div class="step-new-content">
                         Sometimes, you may need the user to select an option from a list that is dynamically driven by the state of the plugin.  This can be done using Liquid tags.  A Liquid tag calls a method in your plugin to inflate a section of HTML.  This select list was provided by the plugin method GetSampleSelectList()
-                        {{plugin_function 'HomeSeerSamplePlugin_VB' 'GetSampleSelectList' []}}
+                        {{plugin_function 'HomeSeerSamplePlugin-VB' 'GetSampleSelectList' []}}
                         <!-- EXAMPLE
                         
                         <select class="mdb-select md-form" id="step3SampleSelectList"> 
@@ -129,7 +129,7 @@
             	$.ajax({
                     type: "POST",
                     async: "true",
-                    url: '/HomeSeerSamplePlugin_VB/sample-guided-process.html',
+                    url: '/HomeSeerSamplePlugin-VB/sample-guided-process.html',
                     cache: false,
                     data: jsonData,
                     success: function(response){

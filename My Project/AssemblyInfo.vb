@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("HomeSeerSamplePlugin_VB")>
+<Assembly: AssemblyTitle("HomeSeerSamplePluginVB")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("HomeSeerSamplePlugin_VB")>
+<Assembly: AssemblyProduct("HomeSeerSamplePluginVB")>
 <Assembly: AssemblyCopyright("Copyright ©  2019")>
 <Assembly: AssemblyTrademark("")>
 
