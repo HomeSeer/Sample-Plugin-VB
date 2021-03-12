@@ -37,7 +37,7 @@
             <!--
             ...but you are also able to utilize additional liquid tags inside the for loop to manipulate HTML written here instead.
             -->
-            {{ list2=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptions' [2] }}
+            {{ list2=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOption' [2] }}
             {{ for item in list2 }}
             <div class="jui-view jui-toggle">
                 <label class="jui-toggle-text" for="{{ item.id }}">{{ item.name }}</label>

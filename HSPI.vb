@@ -400,7 +400,7 @@ Public Class HSPI
         Dim triggerOptions = New List(Of String)()
 
         For i = 1 To numTriggerOptions
-            Dim cbTrigOpt = New ToggleView($"checkbox-triggeroption{i}", $"Trigger Option {i}") With {
+            Dim cbTrigOpt = New ToggleView($"liquid-checkbox-triggeroption{i}", $"Trigger Option {i}") With {
                 .ToggleType = EToggleType.Checkbox
             }
             triggerOptions.Add(cbTrigOpt.ToHtml())
