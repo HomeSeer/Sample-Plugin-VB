@@ -2,6 +2,7 @@
 Imports HomeSeer.Jui.Types
 Imports HomeSeer.Jui.Views
 Imports HomeSeer.PluginSdk
+Imports HomeSeer.PluginSdk.Devices
 Imports HomeSeer.PluginSdk.Logging
 Imports Newtonsoft.Json
 
@@ -44,7 +45,7 @@ Public Class HSPI
             Return "HomeSeerSamplePlugin-VB"
         End Get
     End Property
-   
+
     ''' <inheritdoc />
     ''' <remarks>
     ''' This is the readable name for the plugin that is displayed throughout HomeSeer
@@ -57,8 +58,14 @@ Public Class HSPI
 
     ''' <inheritdoc />
     Protected Overrides ReadOnly Property SettingsFileName As String
-        Get 
+        Get
             Return "HomeSeerSamplePlugin-VB.ini"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property SupportsConfigDevice As Boolean
+        Get
+            Return True
         End Get
     End Property
 
@@ -69,10 +76,10 @@ Public Class HSPI
         LogDebug = True
         'Setup anything that needs to be configured before a connection to HomeSeer is established
         ' like initializing the starting state of anything needed for the operation of the plugin
-            
+
         'Such as initializing the settings pages presented to the user (currently saved state is loaded later)
         InitializeSettingsPages()
-        
+
         'Or adding an event action or trigger type definition to the list of types supported by your plugin
         ActionTypes.AddActionType(GetType(WriteLogSampleActionType))
         TriggerTypes.AddTriggerType(GetType(SampleTriggerType))
@@ -91,7 +98,7 @@ Public Class HSPI
     Private Sub InitializeSettingsPages()
         'Initialize the first settings page
         ' This page is used to manipulate the behavior of the sample plugin
-        
+
         'Start a PageFactory to construct the Page
         Dim settingsPage1 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage1Id, Constants.Settings.SettingsPage1Name)
         'Add a LabelView to the page
@@ -112,11 +119,11 @@ Public Class HSPI
         settingsPage1.WithGroup(Constants.Settings.Sp1PageToggleGroupId, Constants.Settings.Sp1PageToggleGroupName, pageToggles)
         'Add the first page to the list of plugin settings pages
         Settings.Add(settingsPage1.Page)
-        
+
         'Initialize the second settings page
         ' This page is used to visually demonstrate all of the available JUI views except for InputViews.
         ' None of these views interact with the plugin and are merely for show.
-        
+
         'Start a PageFactory to construct the Page
         Dim settingsPage2 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage2Id, Constants.Settings.SettingsPage2Name)
         'Add a LabelView with a title to the page
@@ -133,10 +140,10 @@ Public Class HSPI
         settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId, Constants.Settings.Sp2RadioSlName, Constants.Settings.Sp2SelectListOptions)
         'Add the second page to the list of plugin settings pages
         Settings.Add(settingsPage2.Page)
-        
+
         'Initialize the third settings page
         ' This page is used to visually demonstrate the different types of JUI InputViews.
-        
+
         'Start a PageFactory to construct the Page
         Dim settingsPage3 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage3Id, Constants.Settings.SettingsPage3Name)
         'Add a text InputView to the page
@@ -186,7 +193,7 @@ Public Class HSPI
     End Sub
 
     Protected Overrides Function OnSettingChange(pageId As String, currentView As AbstractView, changedView As AbstractView) As Boolean
-        
+
         'React to the toggles that control the visibility of the last 2 settings pages
         If changedView.Id = Constants.Settings.Sp1PageVisToggle1Id Then
             'Make sure the changed view is a ToggleView
@@ -194,11 +201,11 @@ Public Class HSPI
             If tView Is Nothing Then
                 Return False
             End If
-            
+
             'Show/Hide the second page based on the new state of the toggle
             If tView.IsEnabled Then
                 Settings.ShowPageById(Constants.Settings.SettingsPage2Id)
-            Else 
+            Else
                 Settings.HidePageById(Constants.Settings.SettingsPage2Id)
             End If
         ElseIf changedView.Id = Constants.Settings.Sp1PageVisToggle2Id Then
@@ -207,19 +214,19 @@ Public Class HSPI
             If tView Is Nothing Then
                 Return False
             End If
-            
+
             'Show/Hide the second page based on the new state of the toggle
             If tView.IsEnabled Then
                 Settings.ShowPageById(Constants.Settings.SettingsPage3Id)
-            Else 
+            Else
                 Settings.HidePageById(Constants.Settings.SettingsPage3Id)
             End If
-        Else 
+        Else
             If LogDebug Then
                 Console.WriteLine($"View ID {changedView.Id} does not match any views on the page.")
             End If
         End If
-        
+
         Return True
     End Function
 
@@ -229,7 +236,81 @@ Public Class HSPI
     ''' </remarks>
     Protected Overrides Sub BeforeReturnStatus()
     End Sub
-   
+
+    Public Overrides Function GetJuiDeviceConfigPage(ByVal deviceRef As Integer) As String
+        Dim toggleValue As Boolean = GetExtraData(deviceRef, DeviceConfigSampleToggleId) = True.ToString()
+        Dim checkboxValue As Boolean = GetExtraData(deviceRef, DeviceConfigSampleCheckBoxId) = True.ToString()
+        Dim dropdownSavedValue As String = GetExtraData(deviceRef, DeviceConfigSelectListId)
+        Dim dropdownValue As Integer = -1
+
+        If Not String.IsNullOrEmpty(dropdownSavedValue) Then
+            dropdownValue = Convert.ToInt32(dropdownSavedValue)
+        End If
+
+        Dim radioSelectSavedValue As String = GetExtraData(deviceRef, DeviceConfigRadioSlId)
+        Dim radioSelectValue As Integer = -1
+
+        If Not String.IsNullOrEmpty(radioSelectSavedValue) Then
+            radioSelectValue = Convert.ToInt32(radioSelectSavedValue)
+        End If
+
+        Dim inputSavedValue As String = GetExtraData(deviceRef, DeviceConfigInputId)
+        Dim inputValue As String = DeviceConfigInputValue
+
+        If Not String.IsNullOrEmpty(inputSavedValue) Then
+            inputValue = inputSavedValue
+        End If
+
+        Dim deviceConfigPage = PageFactory.CreateDeviceConfigPage(DeviceConfigPageId, DeviceConfigPageName)
+        deviceConfigPage.WithLabel(DeviceConfigLabelWTitleId, DeviceConfigLabelWTitleName, DeviceConfigLabelWTitleValue)
+        deviceConfigPage.WithLabel(DeviceConfigLabelWoTitleId, Nothing, DeviceConfigLabelWoTitleValue)
+        deviceConfigPage.WithToggle(DeviceConfigSampleToggleId, DeviceConfigSampleToggleName, toggleValue)
+        deviceConfigPage.WithCheckBox(DeviceConfigSampleCheckBoxId, DeviceConfigSampleCheckBoxName, checkboxValue)
+        deviceConfigPage.WithDropDownSelectList(DeviceConfigSelectListId, DeviceConfigSelectListName, DeviceConfigSelectListOptions, dropdownValue)
+        deviceConfigPage.WithRadioSelectList(DeviceConfigRadioSlId, DeviceConfigRadioSlName, DeviceConfigSelectListOptions, radioSelectValue)
+        deviceConfigPage.WithInput(DeviceConfigInputId, DeviceConfigInputName, inputValue)
+        Return deviceConfigPage.Page.ToJsonString()
+    End Function
+
+    Protected Overrides Function OnDeviceConfigChange(ByVal deviceConfigPage As Page, ByVal deviceRef As Integer) As Boolean
+        For Each view As AbstractView In deviceConfigPage.Views
+
+            If view.Id = DeviceConfigSampleToggleId Then
+                Dim v As ToggleView = TryCast(view, ToggleView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigSampleToggleId, v.IsEnabled.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigSampleCheckBoxId Then
+                Dim v As ToggleView = TryCast(view, ToggleView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigSampleCheckBoxId, v.IsEnabled.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigSelectListId Then
+                Dim v As SelectListView = TryCast(view, SelectListView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigSelectListId, v.Selection.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigRadioSlId Then
+                Dim v As SelectListView = TryCast(view, SelectListView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigRadioSlId, v.Selection.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigInputId Then
+                Dim v As InputView = TryCast(view, InputView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigInputId, v.Value)
+                End If
+            End If
+        Next
+
+        Return True
+    End Function
+
     ''' <inheritdoc />
     ''' <remarks>
     ''' Process any HTTP POST requests targeting pages registered to your plugin.
@@ -244,7 +325,7 @@ Public Class HSPI
         If LogDebug Then
             Console.WriteLine("PostBack")
         End If
-        
+
         Dim response = ""
 
         Select Case page
@@ -292,7 +373,7 @@ Public Class HSPI
                     End If
                     response = "error"
                 End Try
-                
+
             Case "add-sample-device.html"
                 Try
                     Dim postData = JsonConvert.DeserializeObject(Of DeviceAddPostData)(data)
@@ -308,7 +389,7 @@ Public Class HSPI
                         deviceData.Ref = devRef
                         response = JsonConvert.SerializeObject(deviceData)
                     End If
-                    
+
                 Catch exception As Exception
                     If LogDebug Then
                         Console.WriteLine(exception.Message)
@@ -339,7 +420,7 @@ Public Class HSPI
         sb.Append("<option value="""" disabled selected>Color</option>")
         sb.Append(Environment.NewLine)
         Dim colorList = New List(Of String)()
-       
+
 
         Try
             Dim colorSettings = Settings(Constants.Settings.SettingsPage1Id).GetViewById(Constants.Settings.Sp1ColorGroupId)
@@ -432,6 +513,27 @@ Public Class HSPI
     '<inheritdoc />
     Public Sub WriteLog(ByVal logType As ELogType, ByVal message As String) Implements WriteLogSampleActionType.IWriteLogActionListener.WriteLog
         HomeSeerSystem.WriteLog(logType, message, Name)
+    End Sub
+
+    Private Function GetExtraData(ByVal deviceRef As Integer, ByVal key As String) As String
+        Dim extraData As PlugExtraData = CType(HomeSeerSystem.GetPropertyByRef(deviceRef, EProperty.PlugExtraData), PlugExtraData)
+
+        If extraData IsNot Nothing AndAlso extraData.ContainsNamed(key) Then
+            Return extraData(key)
+        End If
+
+        Return ""
+    End Function
+
+    Private Sub SetExtraData(ByVal deviceRef As Integer, ByVal key As String, ByVal value As String)
+        Dim extraData As PlugExtraData = CType(HomeSeerSystem.GetPropertyByRef(deviceRef, EProperty.PlugExtraData), PlugExtraData)
+
+        If extraData Is Nothing Then
+            extraData = New PlugExtraData()
+        End If
+
+        extraData(key) = value
+        HomeSeerSystem.UpdatePropertyByRef(deviceRef, EProperty.PlugExtraData, extraData)
     End Sub
 
     ' custom functions that can be accessed from a feature page
