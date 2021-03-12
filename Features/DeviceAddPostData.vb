@@ -70,13 +70,13 @@ Public Class DeviceAddPostData
         End Function
 
         Private Function BuildLpSwitch(ByVal pluginId As String, ByVal df As DeviceFactory) As DeviceFactory
-            Dim ff = FeatureFactory.CreateGenericBinaryControl(pluginId, $"{Name} Controls", "On", "Off", 1, 0)
+            Dim ff = FeatureFactory.CreateGenericBinaryControl(pluginId, $"Controls", "On", "Off", 1, 0).WithLocation(Location1).WithLocation2(Location2)
             df.WithFeature(ff)
             Return df
         End Function
 
         Private Function BuildLpSensor(ByVal pluginId As String, ByVal df As DeviceFactory) As DeviceFactory
-            Dim ff = FeatureFactory.CreateGenericBinarySensor(pluginId, $"{Name} Sensor State", "Sensor tripped", "No event", 1, 0)
+            Dim ff = FeatureFactory.CreateGenericBinarySensor(pluginId, $"Sensor State", "Sensor tripped", "No event", 1, 0).WithLocation(Location1).WithLocation2(Location2)
             df.WithFeature(ff)
             Return df
         End Function
