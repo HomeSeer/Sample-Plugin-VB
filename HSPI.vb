@@ -2,6 +2,7 @@
 Imports HomeSeer.Jui.Types
 Imports HomeSeer.Jui.Views
 Imports HomeSeer.PluginSdk
+Imports HomeSeer.PluginSdk.Devices
 Imports HomeSeer.PluginSdk.Logging
 Imports Newtonsoft.Json
 
@@ -11,8 +12,8 @@ Imports Newtonsoft.Json
 ''' </summary>
 ''' <remarks>
 ''' This class is accessed by HomeSeer and requires that its name be "HSPI" and be located in a namespace
-'''  that corresponds to the name of the executable. For this plugin, "HomeSeerSamplePlugin_VB" the executable
-'''  file is "HSPI_HomeSeerSamplePlugin_VB.exe" and this class is HSPI_HomeSeerSamplePlugin_VB.HSPI
+'''  that corresponds to the name of the executable. For this plugin, "HomeSeerSamplePluginVB" the executable
+'''  file is "HSPI_HomeSeerSamplePluginVB.exe" and this class is HSPI_HomeSeerSamplePluginVB.HSPI
 ''' <para>
 ''' If HomeSeer is unable to find this class, the plugin will not start.
 ''' </para>
@@ -36,29 +37,35 @@ Public Class HSPI
     ''' </para>
     ''' <para>
     ''' The relative address for all of the HTML pages will end up looking like this:
-    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin_VB\
+    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin-VB\
     ''' </para>
     ''' </remarks>
     Public Overrides ReadOnly Property Id As String
         Get
-            Return "HomeSeerSamplePlugin_VB"
-        End Get
-    End Property
-   
-    ''' <inheritdoc />
-    ''' <remarks>
-    ''' This is the readable name for the plugin that is displayed throughout HomeSeer
-    ''' </remarks>
-    Public Overrides ReadOnly Property Name As String
-        Get 
             Return "HomeSeerSamplePlugin-VB"
         End Get
     End Property
 
     ''' <inheritdoc />
+    ''' <remarks>
+    ''' This is the readable name for the plugin that is displayed throughout HomeSeer
+    ''' </remarks>
+    Public Overrides ReadOnly Property Name As String
+        Get
+            Return "Sample Plugin VB"
+        End Get
+    End Property
+
+    ''' <inheritdoc />
     Protected Overrides ReadOnly Property SettingsFileName As String
-        Get 
+        Get
             Return "HomeSeerSamplePlugin-VB.ini"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property SupportsConfigDevice As Boolean
+        Get
+            Return True
         End Get
     End Property
 
@@ -69,15 +76,15 @@ Public Class HSPI
         LogDebug = True
         'Setup anything that needs to be configured before a connection to HomeSeer is established
         ' like initializing the starting state of anything needed for the operation of the plugin
-            
+
         'Such as initializing the settings pages presented to the user (currently saved state is loaded later)
         InitializeSettingsPages()
-        
+
         'Or adding an event action or trigger type definition to the list of types supported by your plugin
         ActionTypes.AddActionType(GetType(WriteLogSampleActionType))
         TriggerTypes.AddTriggerType(GetType(SampleTriggerType))
     End Sub
-    
+
     ''' <summary>
     ''' Initialize the starting state of the settings pages for the HomeSeerSamplePlugin.
     '''  This constructs the framework that the user configurable settings for the plugin live in.
@@ -86,12 +93,12 @@ Public Class HSPI
     ''' </summary>
     ''' <remarks>
     ''' For ease of use throughout the plugin, all of the view IDs, names, and values (non-volatile data)
-    '''  are stored in the <see cref="HSPI_HomeSeerSamplePlugin_VB.Constants.Settings"/> static class.
+    '''  are stored in the <see cref="HSPI_HomeSeerSamplePluginVB.Constants.Settings"/> static class.
     ''' </remarks>
     Private Sub InitializeSettingsPages()
         'Initialize the first settings page
         ' This page is used to manipulate the behavior of the sample plugin
-        
+
         'Start a PageFactory to construct the Page
         Dim settingsPage1 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage1Id, Constants.Settings.SettingsPage1Name)
         'Add a LabelView to the page
@@ -112,11 +119,11 @@ Public Class HSPI
         settingsPage1.WithGroup(Constants.Settings.Sp1PageToggleGroupId, Constants.Settings.Sp1PageToggleGroupName, pageToggles)
         'Add the first page to the list of plugin settings pages
         Settings.Add(settingsPage1.Page)
-        
+
         'Initialize the second settings page
         ' This page is used to visually demonstrate all of the available JUI views except for InputViews.
         ' None of these views interact with the plugin and are merely for show.
-        
+
         'Start a PageFactory to construct the Page
         Dim settingsPage2 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage2Id, Constants.Settings.SettingsPage2Name)
         'Add a LabelView with a title to the page
@@ -133,10 +140,10 @@ Public Class HSPI
         settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId, Constants.Settings.Sp2RadioSlName, Constants.Settings.Sp2SelectListOptions)
         'Add the second page to the list of plugin settings pages
         Settings.Add(settingsPage2.Page)
-        
+
         'Initialize the third settings page
         ' This page is used to visually demonstrate the different types of JUI InputViews.
-        
+
         'Start a PageFactory to construct the Page
         Dim settingsPage3 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage3Id, Constants.Settings.SettingsPage3Name)
         'Add a text InputView to the page
@@ -186,7 +193,7 @@ Public Class HSPI
     End Sub
 
     Protected Overrides Function OnSettingChange(pageId As String, currentView As AbstractView, changedView As AbstractView) As Boolean
-        
+
         'React to the toggles that control the visibility of the last 2 settings pages
         If changedView.Id = Constants.Settings.Sp1PageVisToggle1Id Then
             'Make sure the changed view is a ToggleView
@@ -194,11 +201,11 @@ Public Class HSPI
             If tView Is Nothing Then
                 Return False
             End If
-            
+
             'Show/Hide the second page based on the new state of the toggle
             If tView.IsEnabled Then
                 Settings.ShowPageById(Constants.Settings.SettingsPage2Id)
-            Else 
+            Else
                 Settings.HidePageById(Constants.Settings.SettingsPage2Id)
             End If
         ElseIf changedView.Id = Constants.Settings.Sp1PageVisToggle2Id Then
@@ -207,19 +214,19 @@ Public Class HSPI
             If tView Is Nothing Then
                 Return False
             End If
-            
+
             'Show/Hide the second page based on the new state of the toggle
             If tView.IsEnabled Then
                 Settings.ShowPageById(Constants.Settings.SettingsPage3Id)
-            Else 
+            Else
                 Settings.HidePageById(Constants.Settings.SettingsPage3Id)
             End If
-        Else 
+        Else
             If LogDebug Then
                 Console.WriteLine($"View ID {changedView.Id} does not match any views on the page.")
             End If
         End If
-        
+
         Return True
     End Function
 
@@ -229,7 +236,81 @@ Public Class HSPI
     ''' </remarks>
     Protected Overrides Sub BeforeReturnStatus()
     End Sub
-   
+
+    Public Overrides Function GetJuiDeviceConfigPage(ByVal deviceRef As Integer) As String
+        Dim toggleValue As Boolean = GetExtraData(deviceRef, DeviceConfigSampleToggleId) = True.ToString()
+        Dim checkboxValue As Boolean = GetExtraData(deviceRef, DeviceConfigSampleCheckBoxId) = True.ToString()
+        Dim dropdownSavedValue As String = GetExtraData(deviceRef, DeviceConfigSelectListId)
+        Dim dropdownValue As Integer = -1
+
+        If Not String.IsNullOrEmpty(dropdownSavedValue) Then
+            dropdownValue = Convert.ToInt32(dropdownSavedValue)
+        End If
+
+        Dim radioSelectSavedValue As String = GetExtraData(deviceRef, DeviceConfigRadioSlId)
+        Dim radioSelectValue As Integer = -1
+
+        If Not String.IsNullOrEmpty(radioSelectSavedValue) Then
+            radioSelectValue = Convert.ToInt32(radioSelectSavedValue)
+        End If
+
+        Dim inputSavedValue As String = GetExtraData(deviceRef, DeviceConfigInputId)
+        Dim inputValue As String = DeviceConfigInputValue
+
+        If Not String.IsNullOrEmpty(inputSavedValue) Then
+            inputValue = inputSavedValue
+        End If
+
+        Dim deviceConfigPage = PageFactory.CreateDeviceConfigPage(DeviceConfigPageId, DeviceConfigPageName)
+        deviceConfigPage.WithLabel(DeviceConfigLabelWTitleId, DeviceConfigLabelWTitleName, DeviceConfigLabelWTitleValue)
+        deviceConfigPage.WithLabel(DeviceConfigLabelWoTitleId, Nothing, DeviceConfigLabelWoTitleValue)
+        deviceConfigPage.WithToggle(DeviceConfigSampleToggleId, DeviceConfigSampleToggleName, toggleValue)
+        deviceConfigPage.WithCheckBox(DeviceConfigSampleCheckBoxId, DeviceConfigSampleCheckBoxName, checkboxValue)
+        deviceConfigPage.WithDropDownSelectList(DeviceConfigSelectListId, DeviceConfigSelectListName, DeviceConfigSelectListOptions, dropdownValue)
+        deviceConfigPage.WithRadioSelectList(DeviceConfigRadioSlId, DeviceConfigRadioSlName, DeviceConfigSelectListOptions, radioSelectValue)
+        deviceConfigPage.WithInput(DeviceConfigInputId, DeviceConfigInputName, inputValue)
+        Return deviceConfigPage.Page.ToJsonString()
+    End Function
+
+    Protected Overrides Function OnDeviceConfigChange(ByVal deviceConfigPage As Page, ByVal deviceRef As Integer) As Boolean
+        For Each view As AbstractView In deviceConfigPage.Views
+
+            If view.Id = DeviceConfigSampleToggleId Then
+                Dim v As ToggleView = TryCast(view, ToggleView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigSampleToggleId, v.IsEnabled.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigSampleCheckBoxId Then
+                Dim v As ToggleView = TryCast(view, ToggleView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigSampleCheckBoxId, v.IsEnabled.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigSelectListId Then
+                Dim v As SelectListView = TryCast(view, SelectListView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigSelectListId, v.Selection.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigRadioSlId Then
+                Dim v As SelectListView = TryCast(view, SelectListView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigRadioSlId, v.Selection.ToString())
+                End If
+            ElseIf view.Id = DeviceConfigInputId Then
+                Dim v As InputView = TryCast(view, InputView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigInputId, v.Value)
+                End If
+            End If
+        Next
+
+        Return True
+    End Function
+
     ''' <inheritdoc />
     ''' <remarks>
     ''' Process any HTTP POST requests targeting pages registered to your plugin.
@@ -244,7 +325,7 @@ Public Class HSPI
         If LogDebug Then
             Console.WriteLine("PostBack")
         End If
-        
+
         Dim response = ""
 
         Select Case page
@@ -253,9 +334,9 @@ Public Class HSPI
                 'Handle the Trigger Feature page
                 Try
                     Dim triggerOptions = JsonConvert.DeserializeObject(Of List(Of Boolean))(data)
-                    
+
                     'Get all triggers configured on the HomeSeer system that are of the SampleTriggerType
-                    Dim configuredTriggers = HomeSeerSystem.GetTriggersByType(Name, SampleTriggerType.TriggerNumber)
+                    Dim configuredTriggers = HomeSeerSystem.GetTriggersByType(Id, SampleTriggerType.TriggerNumber)
 
                     If configuredTriggers.Length = 0 Then
                         Return "No triggers configured to fire."
@@ -266,7 +347,7 @@ Public Class HSPI
                         Dim trig = New SampleTriggerType(configuredTrigger, Me, LogDebug)
 
                         If trig.ShouldTriggerFire(triggerOptions.ToArray()) Then
-                            HomeSeerSystem.TriggerFire(Name, configuredTrigger)
+                            HomeSeerSystem.TriggerFire(Id, configuredTrigger)
                         End If
                     Next
 
@@ -292,7 +373,7 @@ Public Class HSPI
                     End If
                     response = "error"
                 End Try
-                
+
             Case "add-sample-device.html"
                 Try
                     Dim postData = JsonConvert.DeserializeObject(Of DeviceAddPostData)(data)
@@ -308,7 +389,7 @@ Public Class HSPI
                         deviceData.Ref = devRef
                         response = JsonConvert.SerializeObject(deviceData)
                     End If
-                    
+
                 Catch exception As Exception
                     If LogDebug Then
                         Console.WriteLine(exception.Message)
@@ -322,11 +403,11 @@ Public Class HSPI
 
         Return response
     End Function
-    
+
     ''' <summary>
     ''' Called by the sample guided process feature page through a liquid tag to provide the list of available colors
     ''' <para>
-    ''' {{plugin_function 'HomeSeerSamplePlugin' 'GetSampleSelectList' []}}
+    ''' {{plugin_function 'HomeSeerSamplePlugin-VB' 'GetSampleSelectList' []}}
     ''' </para>
     ''' </summary>
     ''' <returns>The HTML for the list of select list options</returns>
@@ -339,10 +420,10 @@ Public Class HSPI
         sb.Append("<option value="""" disabled selected>Color</option>")
         sb.Append(Environment.NewLine)
         Dim colorList = New List(Of String)()
-       
+
 
         Try
-            Dim colorSettings = Settings("settings-page2").GetViewById("settings-page2.colorgroup")
+            Dim colorSettings = Settings(Constants.Settings.SettingsPage1Id).GetViewById(Constants.Settings.Sp1ColorGroupId)
             Dim colorViewGroup As ViewGroup = TryCast(colorSettings, ViewGroup)
             Dim colorView As ToggleView
 
@@ -389,7 +470,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get the HTML for a list of checkboxes to use a trigger options
     ''' <para>
-    ''' {{list=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptionsHtml' [2]}}
+    ''' {{list=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptionsHtml' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of checkboxes to generate</param>
@@ -400,7 +481,7 @@ Public Class HSPI
         Dim triggerOptions = New List(Of String)()
 
         For i = 1 To numTriggerOptions
-            Dim cbTrigOpt = New ToggleView($"checkbox-triggeroption{i}", $"Trigger Option {i}") With {
+            Dim cbTrigOpt = New ToggleView($"liquid-checkbox-triggeroption{i}", $"Trigger Option {i}") With {
                 .ToggleType = EToggleType.Checkbox
             }
             triggerOptions.Add(cbTrigOpt.ToHtml())
@@ -412,7 +493,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get trigger option items as a list to populate HTML on the page.
     ''' <para>
-    ''' {{list2=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptions' [2]}}
+    ''' {{list2=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptions' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of trigger options to generate.</param>
@@ -432,6 +513,27 @@ Public Class HSPI
     '<inheritdoc />
     Public Sub WriteLog(ByVal logType As ELogType, ByVal message As String) Implements WriteLogSampleActionType.IWriteLogActionListener.WriteLog
         HomeSeerSystem.WriteLog(logType, message, Name)
+    End Sub
+
+    Private Function GetExtraData(ByVal deviceRef As Integer, ByVal key As String) As String
+        Dim extraData As PlugExtraData = CType(HomeSeerSystem.GetPropertyByRef(deviceRef, EProperty.PlugExtraData), PlugExtraData)
+
+        If extraData IsNot Nothing AndAlso extraData.ContainsNamed(key) Then
+            Return extraData(key)
+        End If
+
+        Return ""
+    End Function
+
+    Private Sub SetExtraData(ByVal deviceRef As Integer, ByVal key As String, ByVal value As String)
+        Dim extraData As PlugExtraData = CType(HomeSeerSystem.GetPropertyByRef(deviceRef, EProperty.PlugExtraData), PlugExtraData)
+
+        If extraData Is Nothing Then
+            extraData = New PlugExtraData()
+        End If
+
+        extraData(key) = value
+        HomeSeerSystem.UpdatePropertyByRef(deviceRef, EProperty.PlugExtraData, extraData)
     End Sub
 
     ' custom functions that can be accessed from a feature page

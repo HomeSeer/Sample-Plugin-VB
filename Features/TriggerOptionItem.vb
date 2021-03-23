@@ -8,8 +8,8 @@ Public Class TriggerOptionItem
     Public Property Name As String
 
     Public Sub New(ByVal id As Integer, ByVal name As String)
-        Id = id
-        Name = name
+        Me.Id = id
+        Me.Name = name
     End Sub
 
     Public Sub New()

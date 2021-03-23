@@ -55,7 +55,7 @@ Public Class SampleTriggerType
         Select Case SelectedSubTriggerIndex
             Case 0
                 Dim numRequiredOptions = GetSelectedOptionCount() + 1
-                Return numRequiredOptions <> 0 AndAlso triggerOptions.Any(Function(triggerOption) triggerOption)
+                Return numRequiredOptions <> 0 AndAlso triggerOptions.Count(Function(triggerOption) triggerOption) = numRequiredOptions
             Case 1
                 Dim specificRequiredOption = GetSelectedSpecificOptionNum()
 
@@ -90,17 +90,24 @@ Public Class SampleTriggerType
     ''' </remarks>
     Public Sub New()
     End Sub
-    
+
     ''' <inheritdoc />
     ''' <remarks>
     ''' This trigger type has 4 subtypes.
     ''' </remarks>
-    Protected Overrides Property SubTriggerTypeNames As List(Of String) = New List(Of String) From {
-        "Button click with X options checked",
-        "Button click with specific option checked",
-        "Button click with no options checked",
-        "Button click with any options checked"
-    }
+    Protected Overrides Property SubTriggerTypeNames As List(Of String)
+        Get
+            Return New List(Of String) From {
+            "Button click with X options checked",
+            "Button click with specific option checked",
+            "Button click with no options checked",
+            "Button click with any options checked"
+        }
+        End Get
+        Set(value As List(Of String))
+
+        End Set
+    End Property
 
     ''' <inheritdoc />
     ''' <remarks>
