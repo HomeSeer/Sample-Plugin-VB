@@ -7,12 +7,13 @@
     It is used to ensure that the Assembly name, namespace, 
     class ID, and HTML output directory correctly correspond to one another
     -->
-    <PluginId>HomeSeerSamplePlugin_VB</PluginId>
+    <PluginId>HomeSeerSamplePlugin-VB</PluginId>
     <!--
     This is the root directory for the local HomeSeer installation.
     The plugin will be automatically deployed to this directory after a successful build
     -->
     <HomeSeerRoot>..\Homeseer\Homeseer\</HomeSeerRoot>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,11 +21,11 @@
     <ProjectGuid>{A65210E0-224B-4B89-ACEE-114BC6E6A3A3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <StartupObject>Sub Main</StartupObject>
-    <RootNamespace>HSPI_$(PluginId)</RootNamespace>
-    <AssemblyName>HSPI_$(PluginId)</AssemblyName>
+    <RootNamespace>HSPI_HomeSeerSamplePluginVB</RootNamespace>
+    <AssemblyName>HSPI_HomeSeerSamplePluginVB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Console</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,8 +34,8 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\HomeSeer\HomeSeer\</OutputPath>
-    <DocumentationFile>HomeSeerSamplePlugin_VB.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>HomeSeerSamplePlugin-VB.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -44,7 +45,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>HomeSeerSamplePlugin_VB.xml</DocumentationFile>
+    <DocumentationFile>HomeSeerSamplePlugin-VB.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DirectToHs|AnyCPU' ">
@@ -54,7 +55,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>$(HomeSeerRoot)</OutputPath>
-    <DocumentationFile>HomeSeerSamplePlugin_VB.xml</DocumentationFile>
+    <DocumentationFile>HomeSeerSamplePlugin-VB.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -71,15 +72,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HSCF, Version=1.0.0.2, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\HomeSeer-PluginSDK.1.0.5\lib\net462\HSCF.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>packages\HomeSeer-PluginSDK.1.2.4\lib\net462\HSCF.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PluginSdk">
-      <HintPath>..\HomeSeer\HomeSeer\bin\homeseer\PluginSdk.dll</HintPath>
+    <Reference Include="PluginSdk, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>packages\HomeSeer-PluginSDK.1.2.4\lib\net462\PluginSdk.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -113,13 +114,14 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="SampleTriggerType.vb" />
     <Compile Include="SpeakerClient.vb" />
     <Compile Include="WriteLogSampleActionType.vb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="HSPI_HomeSeerSamplePlugin_VB.exe.config" />
+    <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

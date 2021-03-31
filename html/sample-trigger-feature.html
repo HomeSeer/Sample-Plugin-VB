@@ -30,14 +30,14 @@
             The following demonstrates how to use a liquid tag to load a collection of data from your plugin and iterate over it.
              For the sake of simplicity, the items in the collection are strings of HTML generated using the JUI library... 
             -->
-            {{ list=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptionsHtml' [2] }}
+            {{ list=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptionsHtml' [2] }}
             {{ for item in list }}
             {{ item }}
             {{ end }}
             <!--
             ...but you are also able to utilize additional liquid tags inside the for loop to manipulate HTML written here instead.
             -->
-            {{ list2=plugin_function 'HomeSeerSamplePlugin' 'GetTriggerOptions' [2] }}
+            {{ list2=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOption' [2] }}
             {{ for item in list2 }}
             <div class="jui-view jui-toggle">
                 <label class="jui-toggle-text" for="{{ item.id }}">{{ item.name }}</label>
@@ -75,7 +75,7 @@
             $.ajax({
                 type: "POST",
                 async: "true",
-                url: '/HomeSeerSamplePlugin/sample-trigger-feature.html',
+                url: '/HomeSeerSamplePlugin-VB/sample-trigger-feature.html',
                 cache: false,
                 data: jsonData,
                 success: function(response){
