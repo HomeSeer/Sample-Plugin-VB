@@ -37,12 +37,12 @@ Public Class HSPI
     ''' </para>
     ''' <para>
     ''' The relative address for all of the HTML pages will end up looking like this:
-    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin-VB\
+    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePluginVB\
     ''' </para>
     ''' </remarks>
     Public Overrides ReadOnly Property Id As String
         Get
-            Return "HomeSeerSamplePlugin-VB"
+            Return "HomeSeerSamplePluginVB"
         End Get
     End Property
 
@@ -59,7 +59,7 @@ Public Class HSPI
     ''' <inheritdoc />
     Protected Overrides ReadOnly Property SettingsFileName As String
         Get
-            Return "HomeSeerSamplePlugin-VB.ini"
+            Return "HomeSeerSamplePluginVB.ini"
         End Get
     End Property
 
@@ -407,7 +407,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample guided process feature page through a liquid tag to provide the list of available colors
     ''' <para>
-    ''' {{plugin_function 'HomeSeerSamplePlugin-VB' 'GetSampleSelectList' []}}
+    ''' {{plugin_function 'HomeSeerSamplePluginVB' 'GetSampleSelectList' []}}
     ''' </para>
     ''' </summary>
     ''' <returns>The HTML for the list of select list options</returns>
@@ -470,7 +470,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get the HTML for a list of checkboxes to use a trigger options
     ''' <para>
-    ''' {{list=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptionsHtml' [2]}}
+    ''' {{list=plugin_function 'HomeSeerSamplePluginVB' 'GetTriggerOptionsHtml' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of checkboxes to generate</param>
@@ -493,7 +493,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get trigger option items as a list to populate HTML on the page.
     ''' <para>
-    ''' {{list2=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptions' [2]}}
+    ''' {{list2=plugin_function 'HomeSeerSamplePluginVB' 'GetTriggerOptions' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of trigger options to generate.</param>
