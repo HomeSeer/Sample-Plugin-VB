@@ -103,13 +103,35 @@ Public Class HSPI
         Dim settingsPage1 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage1Id, Constants.Settings.SettingsPage1Name)
         'Add a LabelView to the page
         settingsPage1.WithLabel(Constants.Settings.Sp1ColorLabelId, Nothing, Constants.Settings.Sp1ColorLabelValue)
-        'Create a list of ToggleViews using the keys and values stored in Constants.Settings.ColorMap as
-        ' the IDs and Names respectively
-        Dim colorToggles = Constants.Settings.ColorMap.[Select](Function(kvp) New ToggleView(kvp.Key, kvp.Value, True) With {
+        'Create a group of ToggleViews displayed as a flexbox grid 
+        Dim colorViewGroup = New GridView(Constants.Settings.Sp1ColorGroupId, Constants.Settings.Sp1ColorGroupName)
+        Dim colorFirstRow = New GridRow()
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleRedId, Constants.Settings.ColorRedName, True) With {
             .ToggleType = EToggleType.Checkbox
-        }).ToList()
-        'Add a ViewGroup containing all of the ToggleViews to the page
-        settingsPage1.WithGroup(Constants.Settings.Sp1ColorGroupId, Constants.Settings.Sp1ColorGroupName, colorToggles)
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleOrangeId, Constants.Settings.ColorOrangeName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleYellowId, Constants.Settings.ColorYellowName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleGreenId, Constants.Settings.ColorGreenName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        Dim colorSecondRow = New GridRow()
+        colorSecondRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleBlueId, Constants.Settings.ColorBlueName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorSecondRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleIndigoId, Constants.Settings.ColorIndigoName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorSecondRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleVioletId, Constants.Settings.ColorVioletName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorViewGroup.AddRow(colorFirstRow)
+        colorViewGroup.AddRow(colorSecondRow)
+        'Add the GridView containing all of the ToggleViews to the page
+        settingsPage1.WithView(colorViewGroup)
         'Create 2 ToggleViews for controlling the visibility of the other two settings pages
         Dim pageToggles = New List(Of ToggleView) From {
             New ToggleView(Constants.Settings.Sp1PageVisToggle1Id, Constants.Settings.Sp1PageVisToggle1Name, True),
