@@ -109,4 +109,11 @@ Public Module Devices
 
     Public Const DeviceConfigTextAreaName As String = "Sample Text Area"
 
+    Public ReadOnly Property DeviceConfigTimeSpanId As String
+        Get
+            Return $"{DeviceConfigPageId}-sampletimespan"
+        End Get
+    End Property
+
+    Public Const DeviceConfigTimeSpanName As String = "Sample Time Span"
 End Module

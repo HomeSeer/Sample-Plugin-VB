@@ -176,6 +176,14 @@
             End Get
         End Property
 
+        Public ReadOnly Property Sp2SampleTimeSpanId As String
+            Get
+                Return $"{SettingsPage2Id}-sampletimespan"
+            End Get
+        End Property
+
+        Public Const Sp2SampleTimeSpanName As String = "Sample Time Span"
+
         Public Const SettingsPage3Id As String = "settings-page3"
         Public Const SettingsPage3Name As String = "Input View Samples"
 

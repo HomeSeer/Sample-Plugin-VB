@@ -7,7 +7,7 @@
     It is used to ensure that the Assembly name, namespace, 
     class ID, and HTML output directory correctly correspond to one another
     -->
-    <PluginId>HomeSeerSamplePlugin-VB</PluginId>
+    <PluginId>HomeSeerSamplePluginVB</PluginId>
     <!--
     This is the root directory for the local HomeSeer installation.
     The plugin will be automatically deployed to this directory after a successful build
@@ -21,8 +21,8 @@
     <ProjectGuid>{A65210E0-224B-4B89-ACEE-114BC6E6A3A3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <StartupObject>Sub Main</StartupObject>
-    <RootNamespace>HSPI_HomeSeerSamplePluginVB</RootNamespace>
-    <AssemblyName>HSPI_HomeSeerSamplePluginVB</AssemblyName>
+    <RootNamespace>HSPI_$(PluginId)</RootNamespace>
+    <AssemblyName>HSPI_$(PluginId)</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Console</MyType>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
@@ -35,7 +35,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>HomeSeerSamplePlugin-VB.xml</DocumentationFile>
+    <DocumentationFile>HomeSeerSamplePluginVB.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -45,7 +45,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>HomeSeerSamplePlugin-VB.xml</DocumentationFile>
+    <DocumentationFile>HomeSeerSamplePluginVB.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DirectToHs|AnyCPU' ">
@@ -55,7 +55,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>$(HomeSeerRoot)</OutputPath>
-    <DocumentationFile>HomeSeerSamplePlugin-VB.xml</DocumentationFile>
+    <DocumentationFile>HomeSeerSamplePluginVB.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
