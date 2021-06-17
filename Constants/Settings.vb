@@ -158,13 +158,21 @@
 
         Public Const Sp2RadioSlName As String = "Sample Radio Select List"
 
+        Public ReadOnly Property Sp2TextAreaId As String
+            Get
+                Return $"{SettingsPage2Id}-textarea"
+            End Get
+        End Property
+
+        Public Const Sp2TextAreaName As String = "Sample Text Area"
+
         Public ReadOnly Property Sp2SelectListOptions As List(Of String)
             Get
                 Return New List(Of String) From {
-                "Option 1",
-                "Option 2",
-                "Option 3"
-            }
+            "Option 1",
+            "Option 2",
+            "Option 3"
+        }
             End Get
         End Property
 

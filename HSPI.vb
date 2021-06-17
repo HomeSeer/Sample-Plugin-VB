@@ -160,8 +160,10 @@ Public Class HSPI
         settingsPage2.WithDropDownSelectList(Constants.Settings.Sp2SelectListId, Constants.Settings.Sp2SelectListName, Constants.Settings.Sp2SelectListOptions)
         'Add a radio select list to the page
         settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId, Constants.Settings.Sp2RadioSlName, Constants.Settings.Sp2SelectListOptions)
+        'Add a text area to the page
+        settingsPage2.WithTextArea(Constants.Settings.Sp2TextAreaId, Constants.Settings.Sp2TextAreaName, 3)
         'Add a time span to the page
-        settingsPage2.WithTimeSpan(Constants.Settings.Sp2SampleTimeSpanId, Constants.Settings.Sp2SampleTimeSpanName)
+         settingsPage2.WithTimeSpan(Constants.Settings.Sp2SampleTimeSpanId, Constants.Settings.Sp2SampleTimeSpanName)
         'Add the second page to the list of plugin settings pages
         Settings.Add(settingsPage2.Page)
 
@@ -290,13 +292,18 @@ Public Class HSPI
             inputValue = inputSavedValue
         End If
 
+        Dim textAreaSavedValue As String = GetExtraData(deviceRef, DeviceConfigTextAreaId)
+        Dim textAreaValue As String = ""
+
+        If Not String.IsNullOrEmpty(textAreaSavedValue) Then
+            textAreaValue = textAreaSavedValue
+        End If
         Dim timeSpanSavedValue As String = GetExtraData(deviceRef, DeviceConfigTimeSpanId)
         Dim timeSpanValue As TimeSpan = TimeSpan.Zero
 
         If Not String.IsNullOrEmpty(timeSpanSavedValue) Then
             TimeSpan.TryParse(timeSpanSavedValue, timeSpanValue)
         End If
-
         Dim deviceConfigPage = PageFactory.CreateDeviceConfigPage(DeviceConfigPageId, DeviceConfigPageName)
         deviceConfigPage.WithLabel(DeviceConfigLabelWTitleId, DeviceConfigLabelWTitleName, DeviceConfigLabelWTitleValue)
         deviceConfigPage.WithLabel(DeviceConfigLabelWoTitleId, Nothing, DeviceConfigLabelWoTitleValue)
@@ -305,6 +312,7 @@ Public Class HSPI
         deviceConfigPage.WithDropDownSelectList(DeviceConfigSelectListId, DeviceConfigSelectListName, DeviceConfigSelectListOptions, dropdownValue)
         deviceConfigPage.WithRadioSelectList(DeviceConfigRadioSlId, DeviceConfigRadioSlName, DeviceConfigSelectListOptions, radioSelectValue)
         deviceConfigPage.WithInput(DeviceConfigInputId, DeviceConfigInputName, inputValue)
+        deviceConfigPage.WithTextArea(DeviceConfigTextAreaId, DeviceConfigTextAreaName, textAreaValue)
         deviceConfigPage.WithTimeSpan(DeviceConfigTimeSpanId, DeviceConfigTimeSpanName, timeSpanValue, True, False)
         Return deviceConfigPage.Page.ToJsonString()
     End Function
@@ -341,6 +349,12 @@ Public Class HSPI
 
                 If v IsNot Nothing Then
                     SetExtraData(deviceRef, DeviceConfigInputId, v.Value)
+                End If
+            ElseIf view.Id = DeviceConfigTextAreaId Then
+                Dim v As TextAreaView = TryCast(view, TextAreaView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigTextAreaId, v.Value)
                 End If
             ElseIf view.Id = DeviceConfigTimeSpanId Then
                 Dim v As TimeSpanView = TryCast(view, TimeSpanView)
