@@ -138,6 +138,8 @@ Public Class HSPI
         settingsPage2.WithDropDownSelectList(Constants.Settings.Sp2SelectListId, Constants.Settings.Sp2SelectListName, Constants.Settings.Sp2SelectListOptions)
         'Add a radio select list to the page
         settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId, Constants.Settings.Sp2RadioSlName, Constants.Settings.Sp2SelectListOptions)
+        'Add a time span to the page
+        settingsPage2.WithTimeSpan(Constants.Settings.Sp2SampleTimeSpanId, Constants.Settings.Sp2SampleTimeSpanName)
         'Add the second page to the list of plugin settings pages
         Settings.Add(settingsPage2.Page)
 
@@ -266,6 +268,13 @@ Public Class HSPI
             inputValue = inputSavedValue
         End If
 
+        Dim timeSpanSavedValue As String = GetExtraData(deviceRef, DeviceConfigTimeSpanId)
+        Dim timeSpanValue As TimeSpan = TimeSpan.Zero
+
+        If Not String.IsNullOrEmpty(timeSpanSavedValue) Then
+            TimeSpan.TryParse(timeSpanSavedValue, timeSpanValue)
+        End If
+
         Dim deviceConfigPage = PageFactory.CreateDeviceConfigPage(DeviceConfigPageId, DeviceConfigPageName)
         deviceConfigPage.WithLabel(DeviceConfigLabelWTitleId, DeviceConfigLabelWTitleName, DeviceConfigLabelWTitleValue)
         deviceConfigPage.WithLabel(DeviceConfigLabelWoTitleId, Nothing, DeviceConfigLabelWoTitleValue)
@@ -274,6 +283,7 @@ Public Class HSPI
         deviceConfigPage.WithDropDownSelectList(DeviceConfigSelectListId, DeviceConfigSelectListName, DeviceConfigSelectListOptions, dropdownValue)
         deviceConfigPage.WithRadioSelectList(DeviceConfigRadioSlId, DeviceConfigRadioSlName, DeviceConfigSelectListOptions, radioSelectValue)
         deviceConfigPage.WithInput(DeviceConfigInputId, DeviceConfigInputName, inputValue)
+        deviceConfigPage.WithTimeSpan(DeviceConfigTimeSpanId, DeviceConfigTimeSpanName, timeSpanValue, True, False)
         Return deviceConfigPage.Page.ToJsonString()
     End Function
 
@@ -309,6 +319,12 @@ Public Class HSPI
 
                 If v IsNot Nothing Then
                     SetExtraData(deviceRef, DeviceConfigInputId, v.Value)
+                End If
+            ElseIf view.Id = DeviceConfigTimeSpanId Then
+                Dim v As TimeSpanView = TryCast(view, TimeSpanView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigTimeSpanId, v.GetStringValue())
                 End If
             End If
         Next

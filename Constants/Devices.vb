@@ -1,5 +1,5 @@
 Public Module Devices
-    
+
     Public ReadOnly Property SampleDeviceTypeList As List(Of String)
         Get
             Return New List(Of String) From {
@@ -100,5 +100,13 @@ Public Module Devices
 
     Public Const DeviceConfigInputName As String = "Sample Text Input"
     Public Const DeviceConfigInputValue As String = "This is a text input"
+
+    Public ReadOnly Property DeviceConfigTimeSpanId As String
+        Get
+            Return $"{DeviceConfigPageId}-sampletimespan"
+        End Get
+    End Property
+
+    Public Const DeviceConfigTimeSpanName As String = "Sample Time Span"
 
 End Module
