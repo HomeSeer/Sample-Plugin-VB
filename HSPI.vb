@@ -192,6 +192,11 @@ Public Class HSPI
         Status = PluginStatus.Ok()
     End Sub
 
+    Protected Overrides Sub OnShutdown()
+        Console.WriteLine("Shutting down")
+        _speakerClient.Disconnect()
+    End Sub
+
     Protected Overrides Function OnSettingChange(pageId As String, currentView As AbstractView, changedView As AbstractView) As Boolean
 
         'React to the toggles that control the visibility of the last 2 settings pages
