@@ -101,4 +101,19 @@ Public Module Devices
     Public Const DeviceConfigInputName As String = "Sample Text Input"
     Public Const DeviceConfigInputValue As String = "This is a text input"
 
+    Public ReadOnly Property DeviceConfigTextAreaId As String
+        Get
+            Return $"{DeviceConfigPageId}-sampletextarea"
+        End Get
+    End Property
+
+    Public Const DeviceConfigTextAreaName As String = "Sample Text Area"
+
+    Public ReadOnly Property DeviceConfigTimeSpanId As String
+        Get
+            Return $"{DeviceConfigPageId}-sampletimespan"
+        End Get
+    End Property
+
+    Public Const DeviceConfigTimeSpanName As String = "Sample Time Span"
 End Module
