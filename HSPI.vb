@@ -37,12 +37,12 @@ Public Class HSPI
     ''' </para>
     ''' <para>
     ''' The relative address for all of the HTML pages will end up looking like this:
-    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePlugin-VB\
+    '''  ..\Homeseer\Homeseer\html\HomeSeerSamplePluginVB\
     ''' </para>
     ''' </remarks>
     Public Overrides ReadOnly Property Id As String
         Get
-            Return "HomeSeerSamplePlugin-VB"
+            Return "HomeSeerSamplePluginVB"
         End Get
     End Property
 
@@ -59,7 +59,7 @@ Public Class HSPI
     ''' <inheritdoc />
     Protected Overrides ReadOnly Property SettingsFileName As String
         Get
-            Return "HomeSeerSamplePlugin-VB.ini"
+            Return "HomeSeerSamplePluginVB.ini"
         End Get
     End Property
 
@@ -103,13 +103,35 @@ Public Class HSPI
         Dim settingsPage1 = PageFactory.CreateSettingsPage(Constants.Settings.SettingsPage1Id, Constants.Settings.SettingsPage1Name)
         'Add a LabelView to the page
         settingsPage1.WithLabel(Constants.Settings.Sp1ColorLabelId, Nothing, Constants.Settings.Sp1ColorLabelValue)
-        'Create a list of ToggleViews using the keys and values stored in Constants.Settings.ColorMap as
-        ' the IDs and Names respectively
-        Dim colorToggles = Constants.Settings.ColorMap.[Select](Function(kvp) New ToggleView(kvp.Key, kvp.Value, True) With {
+        'Create a group of ToggleViews displayed as a flexbox grid 
+        Dim colorViewGroup = New GridView(Constants.Settings.Sp1ColorGroupId, Constants.Settings.Sp1ColorGroupName)
+        Dim colorFirstRow = New GridRow()
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleRedId, Constants.Settings.ColorRedName, True) With {
             .ToggleType = EToggleType.Checkbox
-        }).ToList()
-        'Add a ViewGroup containing all of the ToggleViews to the page
-        settingsPage1.WithGroup(Constants.Settings.Sp1ColorGroupId, Constants.Settings.Sp1ColorGroupName, colorToggles)
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleOrangeId, Constants.Settings.ColorOrangeName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleYellowId, Constants.Settings.ColorYellowName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorFirstRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleGreenId, Constants.Settings.ColorGreenName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        Dim colorSecondRow = New GridRow()
+        colorSecondRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleBlueId, Constants.Settings.ColorBlueName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorSecondRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleIndigoId, Constants.Settings.ColorIndigoName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorSecondRow.AddItem(New ToggleView(Constants.Settings.Sp1ColorToggleVioletId, Constants.Settings.ColorVioletName, True) With {
+            .ToggleType = EToggleType.Checkbox
+        }, extraSmallSize:=EColSize.Col6, largeSize:=EColSize.Col3)
+        colorViewGroup.AddRow(colorFirstRow)
+        colorViewGroup.AddRow(colorSecondRow)
+        'Add the GridView containing all of the ToggleViews to the page
+        settingsPage1.WithView(colorViewGroup)
         'Create 2 ToggleViews for controlling the visibility of the other two settings pages
         Dim pageToggles = New List(Of ToggleView) From {
             New ToggleView(Constants.Settings.Sp1PageVisToggle1Id, Constants.Settings.Sp1PageVisToggle1Name, True),
@@ -138,6 +160,10 @@ Public Class HSPI
         settingsPage2.WithDropDownSelectList(Constants.Settings.Sp2SelectListId, Constants.Settings.Sp2SelectListName, Constants.Settings.Sp2SelectListOptions)
         'Add a radio select list to the page
         settingsPage2.WithRadioSelectList(Constants.Settings.Sp2RadioSlId, Constants.Settings.Sp2RadioSlName, Constants.Settings.Sp2SelectListOptions)
+        'Add a text area to the page
+        settingsPage2.WithTextArea(Constants.Settings.Sp2TextAreaId, Constants.Settings.Sp2TextAreaName, 3)
+        'Add a time span to the page
+         settingsPage2.WithTimeSpan(Constants.Settings.Sp2SampleTimeSpanId, Constants.Settings.Sp2SampleTimeSpanName)
         'Add the second page to the list of plugin settings pages
         Settings.Add(settingsPage2.Page)
 
@@ -190,6 +216,11 @@ Public Class HSPI
 
         Console.WriteLine("Initialized")
         Status = PluginStatus.Ok()
+    End Sub
+
+    Protected Overrides Sub OnShutdown()
+        Console.WriteLine("Shutting down")
+        _speakerClient.Disconnect()
     End Sub
 
     Protected Overrides Function OnSettingChange(pageId As String, currentView As AbstractView, changedView As AbstractView) As Boolean
@@ -261,6 +292,18 @@ Public Class HSPI
             inputValue = inputSavedValue
         End If
 
+        Dim textAreaSavedValue As String = GetExtraData(deviceRef, DeviceConfigTextAreaId)
+        Dim textAreaValue As String = ""
+
+        If Not String.IsNullOrEmpty(textAreaSavedValue) Then
+            textAreaValue = textAreaSavedValue
+        End If
+        Dim timeSpanSavedValue As String = GetExtraData(deviceRef, DeviceConfigTimeSpanId)
+        Dim timeSpanValue As TimeSpan = TimeSpan.Zero
+
+        If Not String.IsNullOrEmpty(timeSpanSavedValue) Then
+            TimeSpan.TryParse(timeSpanSavedValue, timeSpanValue)
+        End If
         Dim deviceConfigPage = PageFactory.CreateDeviceConfigPage(DeviceConfigPageId, DeviceConfigPageName)
         deviceConfigPage.WithLabel(DeviceConfigLabelWTitleId, DeviceConfigLabelWTitleName, DeviceConfigLabelWTitleValue)
         deviceConfigPage.WithLabel(DeviceConfigLabelWoTitleId, Nothing, DeviceConfigLabelWoTitleValue)
@@ -269,6 +312,8 @@ Public Class HSPI
         deviceConfigPage.WithDropDownSelectList(DeviceConfigSelectListId, DeviceConfigSelectListName, DeviceConfigSelectListOptions, dropdownValue)
         deviceConfigPage.WithRadioSelectList(DeviceConfigRadioSlId, DeviceConfigRadioSlName, DeviceConfigSelectListOptions, radioSelectValue)
         deviceConfigPage.WithInput(DeviceConfigInputId, DeviceConfigInputName, inputValue)
+        deviceConfigPage.WithTextArea(DeviceConfigTextAreaId, DeviceConfigTextAreaName, textAreaValue)
+        deviceConfigPage.WithTimeSpan(DeviceConfigTimeSpanId, DeviceConfigTimeSpanName, timeSpanValue, True, False)
         Return deviceConfigPage.Page.ToJsonString()
     End Function
 
@@ -304,6 +349,18 @@ Public Class HSPI
 
                 If v IsNot Nothing Then
                     SetExtraData(deviceRef, DeviceConfigInputId, v.Value)
+                End If
+            ElseIf view.Id = DeviceConfigTextAreaId Then
+                Dim v As TextAreaView = TryCast(view, TextAreaView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigTextAreaId, v.Value)
+                End If
+            ElseIf view.Id = DeviceConfigTimeSpanId Then
+                Dim v As TimeSpanView = TryCast(view, TimeSpanView)
+
+                If v IsNot Nothing Then
+                    SetExtraData(deviceRef, DeviceConfigTimeSpanId, v.GetStringValue())
                 End If
             End If
         Next
@@ -407,7 +464,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample guided process feature page through a liquid tag to provide the list of available colors
     ''' <para>
-    ''' {{plugin_function 'HomeSeerSamplePlugin-VB' 'GetSampleSelectList' []}}
+    ''' {{plugin_function 'HomeSeerSamplePluginVB' 'GetSampleSelectList' []}}
     ''' </para>
     ''' </summary>
     ''' <returns>The HTML for the list of select list options</returns>
@@ -470,7 +527,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get the HTML for a list of checkboxes to use a trigger options
     ''' <para>
-    ''' {{list=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptionsHtml' [2]}}
+    ''' {{list=plugin_function 'HomeSeerSamplePluginVB' 'GetTriggerOptionsHtml' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of checkboxes to generate</param>
@@ -493,7 +550,7 @@ Public Class HSPI
     ''' <summary>
     ''' Called by the sample trigger feature page to get trigger option items as a list to populate HTML on the page.
     ''' <para>
-    ''' {{list2=plugin_function 'HomeSeerSamplePlugin-VB' 'GetTriggerOptions' [2]}}
+    ''' {{list2=plugin_function 'HomeSeerSamplePluginVB' 'GetTriggerOptions' [2]}}
     ''' </para>
     ''' </summary>
     ''' <param name="numTriggerOptions">The number of trigger options to generate.</param>
